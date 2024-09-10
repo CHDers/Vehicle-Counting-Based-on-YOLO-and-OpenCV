@@ -10,13 +10,15 @@ VIDEO_PATH = "./video/test_person.mp4"
 RESULT_PATH = "result3.mp4"
 cap = cv2.VideoCapture(VIDEO_PATH)
 assert cap.isOpened(), "Error reading video file"
-w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
+w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH,
+             cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 
 # Blur ratio
 blur_ratio = 50
 
 # Video writer
-video_writer = cv2.VideoWriter("result5.mp4", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+video_writer = cv2.VideoWriter(
+    "result5.mp4", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
 
 while cap.isOpened():
     success, im0 = cap.read()
@@ -31,12 +33,13 @@ while cap.isOpened():
 
     if boxes is not None:
         for box, cls in zip(boxes, clss):
-            annotator.box_label(box, color=colors(int(cls), True), label=names[int(cls)])
+            annotator.box_label(box, color=colors(
+                int(cls), True), label=names[int(cls)])
 
-            obj = im0[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])]
+            obj = im0[int(box[1]): int(box[3]), int(box[0]): int(box[2])]
             blur_obj = cv2.blur(obj, (blur_ratio, blur_ratio))
 
-            im0[int(box[1]) : int(box[3]), int(box[0]) : int(box[2])] = blur_obj
+            im0[int(box[1]): int(box[3]), int(box[0]): int(box[2])] = blur_obj
 
     cv2.imshow("ultralytics", im0)
     video_writer.write(im0)
